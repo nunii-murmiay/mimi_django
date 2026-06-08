@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товары - Товары МиМи</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fefaf5;
+            color: #2d2a24;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .header {
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 16px 0;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            font-weight: 700;
+            font-size: 1.7rem;
+            letter-spacing: -0.3px;
+        }
+
+        .logo a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo span:first-child {
+            color: #f9a26c;
+            background: #fff0e5;
+            padding: 2px 12px 2px 14px;
+            border-radius: 40px;
+        }
+
+        .logo span:last-child {
+            color: #5b3c2b;
+            font-size: 1.5rem;
+        }
+
+        .nav {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #4a3a2e;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .nav a:hover {
+            color: #f28b48;
+        }
+
+        .nav a.active {
+            color: #f28b48;
+            border-bottom: 2px solid #f28b48;
+            padding-bottom: 4px;
+        }
+
+        .cart-icon {
+            background: #fdf3ec;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #2d2a24;
+        }
+
+        .cart-badge {
+            background: #f28b48;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 40px 0 24px 0;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0e4d8;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #e6d8ce;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+            color: #5b4a3a;
+        }
+
+        .filter-btn.active {
+            background: #f28b48;
+            color: white;
+            border-color: #f28b48;
+        }
+
+        .filter-btn:hover {
+            background: #f28b48;
+            color: white;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border-radius: 28px;
+            transition: all 0.25s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f3e6dd;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 28px -8px rgba(0, 0, 0, 0.12);
+            border-color: #f5d5c0;
+        }
+
+        .product-img {
+            background: #fef5ef;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #c28a62;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .product-desc {
+            font-size: 0.85rem;
+            color: #7b6b5c;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .price {
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: #e27737;
+        }
+
+        .old-price {
+            font-size: 0.8rem;
+            text-decoration: line-through;
+            color: #aa9a8a;
+        }
+
+        .btn-add {
+            background: #f6ede6;
+            border: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #5b3c2b;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .btn-add:hover {
+            background: #f28b48;
+            color: white;
+        }
+
+        .footer {
+            background: #2e2822;
+            color: #e7dbcf;
+            border-radius: 48px 48px 0 0;
+            padding: 48px 0 32px;
+            margin-top: 48px;
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-col p {
+            margin: 8px 0;
+        }
+
+        .footer-col a {
+            color: #fbc9a6;
+            text-decoration: none;
+        }
+
+        @media (max-width: 720px) {
+            .header-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .nav {
+                justify-content: center;
+            }
+            .page-title {
+                font-size: 1.8rem;
+                text-align: center;
+            }
+            .filters {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="/"><span>MM</span><span>Зоомагазин</span></a>
+        </div>
+        <div class="nav">
+            <a href="/">Главная</a>
+            <a href="/tovar/" class="active">Товары</a>
+            <a href="/cart/">Корзина</a>
+        </div>
+        <a href="/cart/" class="cart-icon">
+            Корзина <span class="cart-badge" id="cartCountDisplay">0</span>
+        </a>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <h1 class="page-title">Все товары</h1>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">Все</button>
+            <button class="filter-btn" data-category="food">Корм</button>
+            <button class="filter-btn" data-category="toys">Игрушки</button>
+            <button class="filter-btn" data-category="bed">Лежанки</button>
+            <button class="filter-btn" data-category="accessories">Аксессуары</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <div style="text-align:center; padding:60px; grid-column:1/-1; color:#aa9a8a;">
+                Товары будут добавлены из базы данных
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container footer-inner">
+        <div class="footer-col">
+            <h3 style="color:#fbc9a6;">Товары МиМи</h3>
+            <p>Заботливый зоомагазин для кошек, собак и грызунов.</p>
+            <p>2026 Все права защищены.</p>
+        </div>
+        <div class="footer-col">
+            <p>+7 (999) 123-45-67</p>
+            <p>hello@mimipet.ru</p>
+            <p>ул. Пушистая, 15</p>
+        </div>
+        <div class="footer-col">
+            <p><a href="#">О нас</a></p>
+            <p><a href="#">Доставка и оплата</a></p>
+            <p><a href="#">Контакты</a></p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function getCart() {
+        const cart = localStorage.getItem('mimiCart');
+        return cart ? JSON.parse(cart) : [];
+    }
+
+    function updateCartCountDisplay() {
+        const cart = getCart();
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartBadges = document.querySelectorAll('#cartCountDisplay');
+        cartBadges.forEach(badge => {
+            if (badge) badge.innerText = totalItems;
+        });
+    }
+
+    updateCartCountDisplay();
+</script>
+
+</body>
+</html>
