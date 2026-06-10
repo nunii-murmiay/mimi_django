@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категории - Магазин МиМи</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #fefaf5; min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        .header { background-color: #ffffff; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); position: sticky; top: 0; }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 16px 0; gap: 16px; }
+        .logo a { text-decoration: none; font-size: 1.7rem; font-weight: 700; }
+        .logo span:first-child { color: #f9a26c; background: #fff0e5; padding: 2px 12px; border-radius: 40px; }
+        .logo span:last-child { color: #5b3c2b; }
+        .nav { display: flex; gap: 20px; flex-wrap: wrap; }
+        .nav a { text-decoration: none; font-weight: 500; color: #4a3a2e; transition: 0.2s; font-size: 0.9rem; }
+        .nav a:hover { color: #f28b48; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin: 40px 0 30px; flex-wrap: wrap; gap: 20px; }
+        .page-title { font-size: 2rem; font-weight: 700; }
+        .btn-add { background: #f28b48; color: white; padding: 12px 24px; border-radius: 40px; text-decoration: none; font-weight: 600; transition: 0.2s; display: inline-block; }
+        .btn-add:hover { background: #e27737; transform: translateY(-2px); }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        .item-card { background: white; border-radius: 28px; padding: 24px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); transition: 0.3s; border: 1px solid #f0e4d8; }
+        .item-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1); }
+        .item-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; color: #2d2a24; }
+        .item-desc { color: #7b6b5c; line-height: 1.5; margin-bottom: 20px; }
+        .item-actions { display: flex; gap: 10px; }
+        .btn-detail { flex: 1; background: #f6ede6; color: #5b3c2b; text-decoration: none; padding: 8px 12px; border-radius: 40px; text-align: center; font-size: 0.85rem; font-weight: 600; transition: 0.2s; }
+        .btn-edit { background: #fff0e5; color: #f28b48; }
+        .btn-delete { background: #fee; color: #e27737; }
+        .btn-detail:hover { background: #f28b48; color: white; }
+        main { flex: 1; }
+        .footer { background: #2e2822; color: #e7dbcf; border-radius: 48px 48px 0 0; padding: 48px 0 32px; margin-top: 48px; }
+        .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; }
+        .footer-col p { margin: 8px 0; }
+        .footer-col a { color: #fbc9a6; text-decoration: none; }
+        @media (max-width: 720px) { .header-inner { flex-direction: column; text-align: center; } .nav { justify-content: center; } }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-inner">
+        <div class="logo"><a href="/"><span>MM</span><span>Зоомагазин</span></a></div>
+        <div class="nav">
+            <a href="/">Главная</a>
+            <a href="/tovar/">Товары</a>
+            <a href="/category/" style="color:#f28b48; border-bottom:2px solid #f28b48; padding-bottom:4px;">Категории</a>
+            <a href="/brend/">Бренды</a>
+            <a href="/news/">Новости</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Категории</h1>
+            <a href="{% url 'category_create' %}" class="btn-add">+ Добавить категорию</a>
+        </div>
+        <div class="items-grid">
+            {% for item in category_list %}
+            <div class="item-card">
+                <div class="item-name">{{ item.name }}</div>
+                <div class="item-desc">{{ item.description|default:"Описание отсутствует"|truncatechars:100 }}</div>
+                <div class="item-actions">
+                    <a href="{% url 'category_detail' item.pk %}" class="btn-detail">Подробнее</a>
+                    <a href="{% url 'category_update' item.pk %}" class="btn-detail btn-edit">Изменить</a>
+                    <a href="{% url 'category_delete' item.pk %}" class="btn-detail btn-delete">Удалить</a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="text-align:center; padding:60px; grid-column:1/-1;">Категорий пока нет</div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container footer-inner">
+        <div class="footer-col"><h3>Товары МиМи</h3><p>Заботливый зоомагазин</p><p>2026 Все права защищены.</p></div>
+        <div class="footer-col"><p>+7 (999) 123-45-67</p><p>hello@mimipet.ru</p><p>ул. Пушистая, 15</p></div>
+        <div class="footer-col"><p><a href="#">О нас</a></p><p><a href="#">Доставка</a></p><p><a href="#">Контакты</a></p></div>
+    </div>
+</footer>
+</body>
+</html>
