@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title_name %}
+{{ category.name }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="detail-card">
+            <h1 class="detail-title">{{ category.name }}</h1>
+            <div class="detail-desc">{{ category.description|default:"Описание отсутствует"|linebreaks }}</div>
+            <div>
+                <a href="{% url 'category_list' %}" class="btn-back">← Назад к категориям</a>
+                <a href="{% url 'category_update' category.pk %}" class="btn-back">✎ Редактировать</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

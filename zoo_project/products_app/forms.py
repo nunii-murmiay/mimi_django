@@ -1,5 +1,5 @@
 from django import forms
-from .models import Tovar, Category, Brend, TovarType, News, Review, Promotion
+from .models import *
 
 
 class TovarForm(forms.ModelForm):
@@ -11,6 +11,12 @@ class TovarForm(forms.ModelForm):
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
+        fields = ['name', 'description']
+
+
+class CollectionForm(forms.ModelForm):
+    class Meta:
+        model = Collection
         fields = ['name', 'description']
 
 

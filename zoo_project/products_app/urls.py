@@ -39,4 +39,9 @@ urlpatterns = [
     path('promotion/create/', PromotionCreateView.as_view(), name='promotion_create'),
     path('promotion/<int:pk>/update/', PromotionUpdateView.as_view(), name='promotion_update'),
     path('promotion/<int:pk>/delete/', PromotionDeleteView.as_view(), name='promotion_delete'),
+    path('collection/', CollectionListView.as_view(), name='collection_list'),
+    path('collection/<int:pk>/', CollectionDetailView.as_view(), name='collection_detail'),
+    path('collection/create/', CollectionCreateView.as_view(), name='collection_create'),
+    path('collection/<int:pk>/update/', CollectionUpdateView.as_view(), name='collection_update'),
+    path('collection/<int:pk>/delete/', CollectionDeleteView.as_view(), name='collection_delete'),
 ]

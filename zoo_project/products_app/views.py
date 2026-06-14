@@ -74,7 +74,7 @@ class BrendListView(ListView):
 
 class BrendDetailView(DetailView):
     model = Brend
-    template_name = 'brend/brend_detail.html'
+    template_name = 'brend/brend_details.html'
     context_object_name = 'brend'
 
 class BrendCreateView(CreateView):
@@ -102,7 +102,7 @@ class TovarTypeListView(ListView):
 
 class TovarTypeDetailView(DetailView):
     model = TovarType
-    template_name = 'tovartype/tovartype_detail.html'
+    template_name = 'tovartype/tovartype_details.html'
     context_object_name = 'tovartype'
 
 class TovarTypeCreateView(CreateView):
@@ -153,29 +153,29 @@ class NewsDeleteView(DeleteView):
 
 class ReviewListView(ListView):
     model = Review
-    template_name = 'review/review_list.html'
+    template_name = 'review/reviews_list.html'
     context_object_name = 'review_list'
 
 class ReviewDetailView(DetailView):
     model = Review
-    template_name = 'review/review_detail.html'
+    template_name = 'review/reviews_details.html'
     context_object_name = 'review'
 
 class ReviewCreateView(CreateView):
     model = Review
     form_class = ReviewForm
-    template_name = 'review/review_form.html'
+    template_name = 'review/reviews_form.html'
     success_url = reverse_lazy('review_list')
 
 class ReviewUpdateView(UpdateView):
     model = Review
     form_class = ReviewForm
-    template_name = 'review/review_form.html'
+    template_name = 'review/reviews_form.html'
     success_url = reverse_lazy('review_list')
 
 class ReviewDeleteView(DeleteView):
     model = Review
-    template_name = 'review/review_delete.html'
+    template_name = 'review/reviews_delete.html'
     success_url = reverse_lazy('review_list')
 
 
@@ -186,7 +186,7 @@ class PromotionListView(ListView):
 
 class PromotionDetailView(DetailView):
     model = Promotion
-    template_name = 'promotion/promotion_detail.html'
+    template_name = 'promotion/promotion_details.html'
     context_object_name = 'promotion'
 
 class PromotionCreateView(CreateView):
@@ -205,3 +205,31 @@ class PromotionDeleteView(DeleteView):
     model = Promotion
     template_name = 'promotion/promotion_delete.html'
     success_url = reverse_lazy('promotion_list')
+
+
+class CollectionListView(ListView):
+    model = Collection
+    template_name = 'collection/collection_list.html'
+    context_object_name = 'collection_list'
+
+class CollectionDetailView(DetailView):
+    model = Collection
+    template_name = 'collection/collection_details.html'
+    context_object_name = 'collection'
+
+class CollectionCreateView(CreateView):
+    model = Collection
+    form_class = CollectionForm
+    template_name = 'collection/collection_form.html'
+    success_url = reverse_lazy('collection_list')
+
+class CollectionUpdateView(UpdateView):
+    model = Collection
+    form_class = CollectionForm
+    template_name = 'collection/collection_form.html'
+    success_url = reverse_lazy('collection_list')
+
+class CollectionDeleteView(DeleteView):
+    model = Collection
+    template_name = 'collection/collection_delete.html'
+    success_url = reverse_lazy('collection_list')

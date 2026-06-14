@@ -1,0 +1,18 @@
+<header class="header">
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="/"><span>MM</span><span>Зоомагазин</span></a>
+        </div>
+        <div class="nav">
+            <a href="/"{% if request.path == '/' %} class="active"{% endif %}>Главная</a>
+            <a href="/tovar/"{% if '/tovar/' in request.path %} class="active"{% endif %}>Товары</a>
+            <a href="/category/"{% if '/category/' in request.path %} class="active"{% endif %}>Категории</a>
+            <a href="/brend/"{% if '/brend/' in request.path %} class="active"{% endif %}>Бренды</a>
+            <a href="/news/"{% if '/news/' in request.path %} class="active"{% endif %}>Новости</a>
+            <a href="/tovartype/"{% if '/tovartype/' in request.path %} class="active"{% endif %}>Типы товаров</a>
+        </div>
+        <div class="cart-icon">
+            Корзина <span class="cart-badge">0</span>
+        </div>
+    </div>
+</header>
