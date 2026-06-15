@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products_app'
+    'products_app',
+    'zoo_api',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -127,3 +129,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")#базовая директория и сама папка
 ]#путь где хранятся статик файлы, как указать новую директорию
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S.%f%z'#чтобы не было конфликта между разными фрматами дат, чтобы он был единым
+}
+
+LOGIN_URL = '/login/'

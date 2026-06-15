@@ -4,13 +4,13 @@
 {{ tovar.name }}
 {% endblock %}
 {% block content %}
-<div class="container">
+    <div class="container">
         <div class="product-detail">
             <div class="product-image">
                 {% if tovar.photo %}
                     <img src="{{ tovar.photo.url }}" alt="{{ tovar.name }}">
                 {% else %}
-                    <div style="background:#fef5ef; height:400px; display:flex; align-items:center; justify-content:center; border-radius:24px;">Нет фото</div>
+                    <div class="product-image-placeholder" style="height:400px; width:100%;">Нет фото</div>
                 {% endif %}
             </div>
             <div class="product-info">
@@ -21,14 +21,58 @@
                     <p><strong>Бренд:</strong> {{ tovar.brand.name|default:"Не указан" }}</p>
                     <p><strong>Категория:</strong> {{ tovar.category.name|default:"Не указана" }}</p>
                     <p><strong>Тип:</strong> {{ tovar.tovartype.name|default:"Не указан" }}</p>
-                    <p><strong>Коллекции:</strong> {% for c in tovar.collection.all %}{{ c.name }}{% if not forloop.last %}, {% endif %}{% empty %}Нет{% endfor %}</p>
+                    <p><strong>Коллекции:</strong>
+                        {% for c in tovar.collection.all %}
+                            <a href="{% url 'collection_detail' c.pk %}" style="color:#f28b48; text-decoration:none;">{{ c.name }}</a>{% if not forloop.last %}, {% endif %}
+                        {% empty %}Нет{% endfor %}
+                    </p>
                     <p><strong>Доступен:</strong> {% if tovar.is_exists %}Да{% else %}Нет{% endif %}</p>
                 </div>
-                <div style="margin-top: 30px;">
-                    <a href="{% url 'tovar_list' %}" class="btn-back">Назад к товарам</a>
-                    <a href="{% url 'tovar_update' tovar.pk %}" class="btn-back">Редактировать</a>
+                <div class="detail-actions">
+                    <a href="{% url 'tovar_list' %}" class="btn-back">← Назад к товарам</a>
+                    {% if perms.products_app.change_tovar %}
+                    <a href="{% url 'tovar_update' tovar.pk %}" class="btn-back">✎ Редактировать</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
+
+        <section class="reviews-section">
+            <div class="section-header">
+                <h2 class="reviews-section-title">Отзывы о товаре</h2>
+                <a href="{% url 'review_create' %}?tovar={{ tovar.pk }}" class="btn-add">+ Написать отзыв</a>
+            </div>
+
+            <div class="reviews-list">
+                {% for review in tovar.reviews.all %}
+                <div class="review-item">
+                    <div class="review-item-header">
+                        <span class="review-item-author">{{ review.author_name }}</span>
+                        <div class="rating">
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= review.rating %}
+                                    <span class="star">★</span>
+                                {% else %}
+                                    <span class="star-empty">★</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <p class="review-item-text">{{ review.text|default:"Без текста" }}</p>
+                    <div class="review-item-footer">
+                        <span class="review-item-date">{{ review.created_at|date:"d.m.Y H:i" }}</span>
+                        {% if review.is_approved %}
+                            <span class="item-status status-approved">Одобрен</span>
+                        {% else %}
+                            <span class="item-status status-pending">На модерации</span>
+                        {% endif %}
+                        <a href="{% url 'review_detail' review.pk %}" class="btn-detail" style="flex:none; padding:6px 14px;">Подробнее</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-message" style="padding: 40px;">Отзывов пока нет. Будьте первым!</div>
+                {% endfor %}
+            </div>
+        </section>
     </div>
 {% endblock content %}

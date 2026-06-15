@@ -4,20 +4,41 @@
 {{ promotion.name }}
 {% endblock %}
 {% block content %}
-<div class="container">
+    <div class="container">
         <div class="detail-card">
             <div class="discount-badge">-{{ promotion.discount }}%</div>
             <h1 class="detail-title">{{ promotion.name }}</h1>
-            <div class="detail-dates">С {{ promotion.start_date|date:"d.m.Y" }} по {{ promotion.end_date|date:"d.m.Y" }}</div>
+            <div class="detail-dates">С {{ promotion.start_date|date:"d.m.Y H:i" }} по {{ promotion.end_date|date:"d.m.Y H:i" }}</div>
             {% if promotion.is_active %}
                 <div class="detail-status status-active">Активна</div>
             {% else %}
                 <div class="detail-status status-inactive">Завершена</div>
             {% endif %}
             <div class="detail-desc">{{ promotion.description|default:"Описание отсутствует"|linebreaks }}</div>
-            <div>
-                <a href="{% url 'promotion_list' %}" class="btn-back">← Назад к акциям</a>
+
+            {% if promotion.tovar.all %}
+            <div class="promo-products-list">
+                <h3>Товары по акции</h3>
+                <ul class="products-list">
+                    {% for tovar in promotion.tovar.all %}
+                    <li>
+                        <a href="{% url 'tovar_detail' tovar.pk %}" style="text-decoration:none; color:#f28b48;">{{ tovar.name }}</a>
+                        — {{ tovar.price }} ₽
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="detail-actions">
+                <a href="{% url 'promotion_list' %}" class="btn-back">← Все акции</a>
+                <a href="{% url 'info_view' %}" class="btn-back">На главную</a>
+                {% if perms.products_app.change_promotion %}
                 <a href="{% url 'promotion_update' promotion.pk %}" class="btn-back">✎ Редактировать</a>
+                {% endif %}
+                {% if perms.products_app.delete_promotion %}
+                <a href="{% url 'promotion_delete' promotion.pk %}" class="btn-back" style="background:#fee; color:#e27737;">Удалить</a>
+                {% endif %}
             </div>
         </div>
     </div>

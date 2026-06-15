@@ -7,7 +7,9 @@
     <div class="container">
         <div class="page-header">
             <h1 class="page-title">Все товары</h1>
+            {% if perms.products_app.add_tovar %}
             <a href="{% url 'tovar_create' %}" class="btn-add">+ Добавить товар</a>
+            {% endif %}
         </div>
         <div class="products-grid">
             {% for product in tovar_list %}
@@ -25,8 +27,12 @@
                     <div class="product-price">{{ product.price }} ₽</div>
                     <div class="product-actions">
                         <a href="{% url 'tovar_detail' product.pk %}" class="btn-detail">Подробнее</a>
+                        {% if perms.products_app.change_tovar %}
                         <a href="{% url 'tovar_update' product.pk %}" class="btn-detail btn-edit">Изменить</a>
+                        {% endif %}
+                        {% if perms.products_app.delete_tovar %}
                         <a href="{% url 'tovar_delete' product.pk %}" class="btn-detail btn-delete">Удалить</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title_name %}
+Авторизация
+{% endblock %}
+{% block content %}
+    <div class="container auth-page">
+        <div class="auth-card">
+            <h1 class="form-title">Авторизация</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="auth-actions">
+                    <button type="submit">Войти</button>
+                </div>
+            </form>
+            <div class="auth-links">
+                <a href="{% url 'registration_page' %}">Зарегистрироваться</a>
+                <a href="{% url 'info_view' %}">← На главную</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

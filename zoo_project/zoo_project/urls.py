@@ -22,6 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('products_app.urls')),
+    path('api/', include("zoo_api.urls"))
 
 
 ]

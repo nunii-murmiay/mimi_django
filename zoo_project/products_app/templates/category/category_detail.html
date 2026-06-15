@@ -10,7 +10,9 @@
             <div class="detail-desc">{{ category.description|default:"Описание отсутствует"|linebreaks }}</div>
             <div>
                 <a href="{% url 'category_list' %}" class="btn-back">← Назад к категориям</a>
-                <a href="{% url 'category_update' category.pk %}" class="btn-back">✎ Редактировать</a>
+                {% if perms.products_app.change_category %}
+                <a href="{% url 'category_update' category.pk %}" class="btn-back">Редактировать</a>
+                {% endif %}
             </div>
         </div>
     </div>

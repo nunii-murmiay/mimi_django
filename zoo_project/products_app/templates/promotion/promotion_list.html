@@ -4,32 +4,41 @@
 Акции и скидки
 {% endblock %}
 {% block content %}
-<div class="container">
+    <div class="container">
         <div class="page-header">
-            <h1 class="page-title">Акции и скидки</h1>
+            <h1 class="page-title">Все акции и скидки</h1>
+            {% if perms.products_app.add_promotion %}
             <a href="{% url 'promotion_create' %}" class="btn-add">+ Добавить акцию</a>
+            {% endif %}
         </div>
         <div class="items-grid">
             {% for item in promotion_list %}
             <div class="item-card">
                 <div class="discount-badge">-{{ item.discount }}%</div>
                 <div class="item-name">{{ item.name }}</div>
-                <div class="item-dates">{{ item.start_date|date:"d.m.Y" }} - {{ item.end_date|date:"d.m.Y" }}</div>
+                <div class="item-dates">{{ item.start_date|date:"d.m.Y" }} — {{ item.end_date|date:"d.m.Y" }}</div>
                 {% if item.is_active %}
                     <div class="item-status status-active">Активна</div>
                 {% else %}
                     <div class="item-status status-inactive">Завершена</div>
                 {% endif %}
-                <div class="item-desc">{{ item.description|default:"Описание отсутствует"|truncatechars:80 }}</div>
+                <div class="item-desc">{{ item.description|default:"Описание отсутствует"|truncatechars:120 }}</div>
                 <div class="item-actions">
                     <a href="{% url 'promotion_detail' item.pk %}" class="btn-detail">Подробнее</a>
+                    {% if perms.products_app.change_promotion %}
                     <a href="{% url 'promotion_update' item.pk %}" class="btn-detail btn-edit">Изменить</a>
+                    {% endif %}
+                    {% if perms.products_app.delete_promotion %}
                     <a href="{% url 'promotion_delete' item.pk %}" class="btn-detail btn-delete">Удалить</a>
+                    {% endif %}
                 </div>
             </div>
             {% empty %}
             <div class="empty-message">Акций пока нет</div>
             {% endfor %}
+        </div>
+        <div style="margin-top: 24px;">
+            <a href="{% url 'info_view' %}" class="btn-back">← На главную</a>
         </div>
     </div>
 {% endblock content %}

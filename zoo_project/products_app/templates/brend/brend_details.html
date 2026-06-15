@@ -11,7 +11,9 @@
             <div class="detail-desc">{{ brend.description|default:"Описание отсутствует"|linebreaks }}</div>
             <div>
                 <a href="{% url 'brend_list' %}" class="btn-back">← Назад к брендам</a>
+                {% if perms.products_app.change_brend %}
                 <a href="{% url 'brend_update' brend.pk %}" class="btn-back">✎ Редактировать</a>
+                {% endif %}
             </div>
         </div>
     </div>

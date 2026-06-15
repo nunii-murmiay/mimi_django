@@ -7,7 +7,9 @@
 <div class="container">
         <div class="page-header">
             <h1 class="page-title">Категории</h1>
+            {% if perms.products_app.add_category %}
             <a href="{% url 'category_create' %}" class="btn-add">+ Добавить категорию</a>
+            {% endif %}
         </div>
         <div class="items-grid">
             {% for item in category_list %}
@@ -16,8 +18,12 @@
                 <div class="item-desc">{{ item.description|default:"Описание отсутствует"|truncatechars:100 }}</div>
                 <div class="item-actions">
                     <a href="{% url 'category_detail' item.pk %}" class="btn-detail">Подробнее</a>
+                    {% if perms.products_app.change_category %}
                     <a href="{% url 'category_update' item.pk %}" class="btn-detail btn-edit">Изменить</a>
+                    {% endif %}
+                    {% if perms.products_app.delete_category %}
                     <a href="{% url 'category_delete' item.pk %}" class="btn-detail btn-delete">Удалить</a>
+                    {% endif %}
                 </div>
             </div>
             {% empty %}

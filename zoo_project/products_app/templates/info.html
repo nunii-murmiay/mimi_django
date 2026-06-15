@@ -4,7 +4,7 @@
 Товары МиМи - Зоомагазин
 {% endblock %}
 {% block content %}
-<section class="hero">
+    <section class="hero">
         <div class="container hero-grid">
             <div class="hero-text">
                 <h1>Всё для счастья<br>вашего питомца</h1>
@@ -33,27 +33,69 @@
         <h2 class="section-title">Популярные товары</h2>
         <div class="products-grid" id="productsContainer">
             {% for tovar in tovar_list|slice:":6" %}
-            <div class="product-card">
-                <div class="product-img">
-                    {% if tovar.photo %}
-                        <img src="{{ tovar.photo.url }}" alt="{{ tovar.name }}" style="width:100%; height:100%; object-fit:cover;">
-                    {% else %}
-                        {{ tovar.tovartype.name|default:"Товар" }}
-                    {% endif %}
+            <a href="{% url 'tovar_detail' tovar.pk %}" class="product-card-link">
+                <div class="product-card">
+                    <div class="product-img">
+                        {% if tovar.photo %}
+                            <img src="{{ tovar.photo.url }}" alt="{{ tovar.name }}" style="width:100%; height:100%; object-fit:cover;">
+                        {% else %}
+                            {{ tovar.tovartype.name|default:"Товар" }}
+                        {% endif %}
+                    </div>
+                    <div class="product-title">{{ tovar.name }}</div>
+                    <div class="product-desc">{{ tovar.description|truncatechars:60|default:"Описание отсутствует" }}</div>
+                    <div class="price-row">
+                        <div class="price">{{ tovar.price }} ₽</div>
+                    </div>
+                    <span class="btn-detail-inline">Подробнее →</span>
                 </div>
-                <div class="product-title">{{ tovar.name }}</div>
-                <div class="product-desc">{{ tovar.description|truncatechars:60|default:"Описание отсутствует" }}</div>
-                <div class="price-row">
-                    <div class="price">{{ tovar.price }} ₽</div>
-                </div>
-            </div>
+            </a>
             {% empty %}
-            <div style="text-align:center; padding:60px; grid-column:1/-1; color:#aa9a8a;">
-                Товары будут добавлены из базы данных
-            </div>
+            <div class="empty-message">Товары будут добавлены из базы данных</div>
             {% endfor %}
         </div>
-        
+
+        <section class="home-section">
+            <div class="section-header">
+                <h2 class="section-title" style="margin-bottom: 0;">Акции и скидки</h2>
+                <a href="{% url 'promotion_list' %}" class="section-link">Смотреть все акции →</a>
+            </div>
+            <div class="items-grid">
+                {% for item in promotion_list %}
+                <a href="{% url 'promotion_detail' item.pk %}" class="home-card-link">
+                    <div class="promo-home-card">
+                        <div class="discount-badge">-{{ item.discount }}%</div>
+                        <div class="item-name">{{ item.name }}</div>
+                        <div class="item-dates">{{ item.start_date|date:"d.m.Y" }} — {{ item.end_date|date:"d.m.Y" }}</div>
+                        <div class="item-status status-active">Активна</div>
+                        <div class="item-desc">{{ item.description|default:"Описание отсутствует"|truncatechars:100 }}</div>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="empty-message">Сейчас нет активных акций</div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="home-section">
+            <div class="section-header">
+                <h2 class="section-title" style="margin-bottom: 0;">Коллекции</h2>
+                <a href="{% url 'collection_list' %}" class="section-link">Все коллекции →</a>
+            </div>
+            <div class="items-grid">
+                {% for item in collection_list %}
+                <a href="{% url 'collection_detail' item.pk %}" class="home-card-link">
+                    <div class="item-card">
+                        <div class="item-name">{{ item.name }}</div>
+                        <div class="item-desc">{{ item.description|default:"Описание отсутствует"|truncatechars:120 }}</div>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="empty-message">Коллекций пока нет</div>
+                {% endfor %}
+            </div>
+        </section>
+
         <div class="features">
             <div class="features-grid">
                 <div class="feature"><div class="feature-icon">Доставка</div><h3>Быстрая доставка</h3><p>за 1-2 дня</p></div>

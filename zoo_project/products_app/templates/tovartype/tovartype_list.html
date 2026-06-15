@@ -7,7 +7,9 @@
 <div class="container">
         <div class="page-header">
             <h1 class="page-title">Типы товаров</h1>
+            {% if perms.products_app.add_tovartype %}
             <a href="{% url 'tovartype_create' %}" class="btn-add">+ Добавить тип</a>
+            {% endif %}
         </div>
         <div class="items-grid">
             {% for item in tovartype_list %}
@@ -15,8 +17,12 @@
                 <div class="item-name">{{ item.name }}</div>
                 <div class="item-actions">
                     <a href="{% url 'tovartype_detail' item.pk %}" class="btn-detail">Подробнее</a>
+                    {% if perms.products_app.change_tovartype %}
                     <a href="{% url 'tovartype_update' item.pk %}" class="btn-detail btn-edit">Изменить</a>
+                    {% endif %}
+                    {% if perms.products_app.delete_tovartype %}
                     <a href="{% url 'tovartype_delete' item.pk %}" class="btn-detail btn-delete">Удалить</a>
+                    {% endif %}
                 </div>
             </div>
             {% empty %}

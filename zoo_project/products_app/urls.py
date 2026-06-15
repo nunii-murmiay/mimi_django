@@ -44,4 +44,8 @@ urlpatterns = [
     path('collection/create/', CollectionCreateView.as_view(), name='collection_create'),
     path('collection/<int:pk>/update/', CollectionUpdateView.as_view(), name='collection_update'),
     path('collection/<int:pk>/delete/', CollectionDeleteView.as_view(), name='collection_delete'),
+
+    path('login/', login_user, name='login_page'),
+    path('registration/', registration_user, name='registration_page'),
+    path('logout', logout_user, name='logout_page'),
 ]

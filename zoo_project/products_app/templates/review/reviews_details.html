@@ -4,9 +4,12 @@
 Отзыв от {{ review.author_name }}
 {% endblock %}
 {% block content %}
-<div class="container">
+    <div class="container">
         <div class="detail-card">
-            <div class="review-product">Товар: {{ review.tovar.name }}</div>
+            <div class="review-product">
+                Товар:
+                <a href="{% url 'tovar_detail' review.tovar.pk %}" style="color:#f28b48; text-decoration:none;">{{ review.tovar.name }}</a>
+            </div>
             <div class="review-author">
                 {{ review.author_name }}
                 <div class="rating">
@@ -26,9 +29,10 @@
             {% else %}
                 <div class="review-status status-pending">На модерации</div>
             {% endif %}
-            <div>
-                <a href="{% url 'review_list' %}" class="btn-back">← Назад к отзывам</a>
+            <div class="detail-actions">
+                <a href="{% url 'tovar_detail' review.tovar.pk %}" class="btn-back">← К товару</a>
                 <a href="{% url 'review_update' review.pk %}" class="btn-back">✎ Редактировать</a>
+                <a href="{% url 'review_delete' review.pk %}" class="btn-back" style="background:#fee; color:#e27737;">Удалить</a>
             </div>
         </div>
     </div>

@@ -9,7 +9,9 @@
             <h1 class="detail-title">{{ tovartype.name }}</h1>
             <div>
                 <a href="{% url 'tovartype_list' %}" class="btn-back">← Назад к типам товаров</a>
+                {% if perms.products_app.change_tovartype %}
                 <a href="{% url 'tovartype_update' tovartype.pk %}" class="btn-back">✎ Редактировать</a>
+                {% endif %}
             </div>
         </div>
     </div>

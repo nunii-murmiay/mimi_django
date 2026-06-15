@@ -4,23 +4,32 @@
 {{ collection.name }}
 {% endblock %}
 {% block content %}
-<div class="container">
+    <div class="container">
         <div class="detail-card">
             <h1 class="detail-title">{{ collection.name }}</h1>
             <div class="detail-desc">{{ collection.description|default:"Описание отсутствует"|linebreaks }}</div>
-            
+
             <div class="products-title">Товары в этой коллекции</div>
             <ul class="products-list">
                 {% for tovar in collection.tovar_set.all %}
-                    <li><a href="{% url 'tovar_detail' tovar.pk %}" style="text-decoration:none; color:#f28b48;">{{ tovar.name }}</a> - {{ tovar.price }} ₽</li>
+                <li>
+                    <a href="{% url 'tovar_detail' tovar.pk %}" style="text-decoration:none; color:#f28b48;">{{ tovar.name }}</a>
+                    — {{ tovar.price }} ₽
+                </li>
                 {% empty %}
-                    <li>В этой коллекции пока нет товаров</li>
+                <li>В этой коллекции пока нет товаров</li>
                 {% endfor %}
             </ul>
-            
-            <div style="margin-top: 30px;">
-                <a href="{% url 'collection_list' %}" class="btn-back">← Назад к коллекциям</a>
+
+            <div class="detail-actions">
+                <a href="{% url 'collection_list' %}" class="btn-back">← Все коллекции</a>
+                <a href="{% url 'info_view' %}" class="btn-back">На главную</a>
+                {% if perms.products_app.change_collection %}
                 <a href="{% url 'collection_update' collection.pk %}" class="btn-back">✎ Редактировать</a>
+                {% endif %}
+                {% if perms.products_app.delete_collection %}
+                <a href="{% url 'collection_delete' collection.pk %}" class="btn-back" style="background:#fee; color:#e27737;">Удалить</a>
+                {% endif %}
             </div>
         </div>
     </div>
