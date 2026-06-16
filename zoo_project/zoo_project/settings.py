@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'products_app',
     'zoo_api',
-    'rest_framework'
+    'rest_framework',
+    'basket'
 ]
 
 MIDDLEWARE = [
@@ -130,8 +131,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")#базовая директория и сама папка
 ]#путь где хранятся статик файлы, как указать новую директорию
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S.%f%z'#чтобы не было конфликта между разными фрматами дат, чтобы он был единым
 }
 
 LOGIN_URL = '/login/'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+BASKET_SESSION_ID = 'basket'

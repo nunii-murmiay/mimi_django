@@ -43,7 +43,7 @@ class NewsForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['author_name', 'text', 'rating', 'is_approved', 'tovar']
+        fields = ['text', 'rating', 'tovar']
 
 
 class PromotionForm(forms.ModelForm):
@@ -87,4 +87,22 @@ class LoginForm(AuthenticationForm):
     widget=forms.PasswordInput(attrs={'class':'form-control',}),
 
 )
+    
+class BasketAddProductForm(forms.Form):
+    count = forms.IntegerField(min_value=1, initial=1, label='Количество',
+                               widget=forms.NumberInput(attrs={'class': 'form-control'}),)
+    reload = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = (
+            'buyer_firstname',
+            'buyer_name',
+            'buyer_surname',
+            'comment',
+            'delivery_address',
+            'delivery_type',
+        )
 

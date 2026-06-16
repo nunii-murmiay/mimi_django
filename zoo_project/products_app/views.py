@@ -19,7 +19,7 @@ def info_view(request):
 
 
 def cart_view(request):
-    return render(request, 'cart.html')
+    return redirect('basket_detail')
 
 
 class TovarListView(ListView):
@@ -32,6 +32,11 @@ class TovarDetailView(DetailView):
     model = Tovar
     template_name = 'tovar/tovar_detail.html'
     context_object_name = 'tovar'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_basket'] = BasketAddProductForm()
+        return context
 
 
 @method_decorator(permission_required('products_app.add_tovar'), name='dispatch')
@@ -209,6 +214,7 @@ class ReviewDetailView(DetailView):
     context_object_name = 'review'
 
 
+@method_decorator(permission_required('products_app.add_review'), name='dispatch')
 class ReviewCreateView(CreateView):
     model = Review
     form_class = ReviewForm
@@ -221,6 +227,11 @@ class ReviewCreateView(CreateView):
             initial['tovar'] = tovar_id
         return initial
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.author_name = self.request.user.username
+        return super().form_valid(form)
+
     def get_success_url(self):
         tovar_id = self.request.GET.get('tovar') or self.object.tovar_id
         if tovar_id:
@@ -228,17 +239,25 @@ class ReviewCreateView(CreateView):
         return reverse_lazy('review_list')
 
 
+@method_decorator(permission_required('products_app.change_review'), name='dispatch')
 class ReviewUpdateView(UpdateView):
     model = Review
     form_class = ReviewForm
     template_name = 'review/reviews_form.html'
     success_url = reverse_lazy('review_list')
 
+    def get_queryset(self):
+        return Review.objects.filter(author=self.request.user)
 
+
+@method_decorator(permission_required('products_app.delete_review'), name='dispatch')
 class ReviewDeleteView(DeleteView):
     model = Review
     template_name = 'review/reviews_delete.html'
     success_url = reverse_lazy('review_list')
+
+    def get_queryset(self):
+        return Review.objects.filter(author=self.request.user)
 
 
 class PromotionListView(ListView):

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 MAX_LEGHT = 255
@@ -104,6 +105,7 @@ class Review(models.Model):
     is_approved = models.BooleanField(default=False, verbose_name='Одобрен')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', null=True, blank=True)
     tovar = models.ForeignKey(Tovar, on_delete=models.CASCADE, verbose_name='Товар', related_name='reviews')
 
     def __str__(self):
@@ -112,3 +114,46 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+
+class Order(models.Model):
+
+    
+    SHOP = 'SH'
+    COURIER = 'CR'
+    PICKUPPOINT = 'PP'
+    TYPE_DELIVERY = [
+        (SHOP, 'Вывоз из магазина'),
+        (COURIER, 'Курьер'),
+        (PICKUPPOINT, 'Пункт выдачи заказов'),
+    ]
+    
+
+    buyer_firstname = models.CharField(max_length=MAX_LEGHT, verbose_name='Фамилия покупателя')
+    buyer_name = models.CharField(max_length=MAX_LEGHT, verbose_name='Имя покупателя')
+    buyer_surname = models.CharField(max_length=MAX_LEGHT, blank=True, null=True, verbose_name='Отчество покупателя')
+    comment = models.CharField(max_length=MAX_LEGHT, blank=True, null=True, verbose_name='Комментарий к заказу')
+    delivery_address = models.CharField(max_length=MAX_LEGHT, verbose_name='Адрес доставки')
+    delivery_type = models.CharField(max_length=2, choices=TYPE_DELIVERY, default=SHOP, verbose_name='Способ доставки')
+    date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания заказа')
+    date_finish = models.DateTimeField(null=True, blank=True, verbose_name='Дата завершения заказа')
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    tovar = models.ManyToManyField(Tovar, through='Pos_order', verbose_name='Товар')
+    def __str__(self):
+        return f'#{self.pk} - {self.buyer_firstname} {self.buyer_name} ({self.date_create})'
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+class Pos_order(models.Model):
+    tovar = models.ForeignKey(Tovar, on_delete=models.PROTECT, verbose_name='Товар')
+    order = models.ForeignKey(Order, on_delete=models.PROTECT, verbose_name='Заказ')
+    count = models.PositiveIntegerField(default=1, verbose_name='Количество')
+    discount = models.PositiveIntegerField(default=0, verbose_name='Скидка')
+    def __str__(self):
+        return f'Заказ №{self.order.pk} - {self.tovar.name} ({self.order.buyer_firstname})'
+    
+    class Meta:
+        verbose_name = 'Позиция заказа'
+        verbose_name_plural = 'Позиции заказов'

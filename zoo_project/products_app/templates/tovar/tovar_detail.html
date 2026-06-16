@@ -29,6 +29,13 @@
                     <p><strong>Доступен:</strong> {% if tovar.is_exists %}Да{% else %}Нет{% endif %}</p>
                 </div>
                 <div class="detail-actions">
+                    {% if tovar.is_exists %}
+                    <form method="post" action="{% url 'basket_add' tovar.pk %}" style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                        {% csrf_token %}
+                        {{ form_basket }}
+                        <button type="submit" class="btn-add">В корзину</button>
+                    </form>
+                    {% endif %}
                     <a href="{% url 'tovar_list' %}" class="btn-back">← Назад к товарам</a>
                     {% if perms.products_app.change_tovar %}
                     <a href="{% url 'tovar_update' tovar.pk %}" class="btn-back">✎ Редактировать</a>
@@ -40,7 +47,9 @@
         <section class="reviews-section">
             <div class="section-header">
                 <h2 class="reviews-section-title">Отзывы о товаре</h2>
+                {% if perms.products_app.add_review %}
                 <a href="{% url 'review_create' %}?tovar={{ tovar.pk }}" class="btn-add">+ Написать отзыв</a>
+                {% endif %}
             </div>
 
             <div class="reviews-list">
@@ -67,6 +76,12 @@
                             <span class="item-status status-pending">На модерации</span>
                         {% endif %}
                         <a href="{% url 'review_detail' review.pk %}" class="btn-detail" style="flex:none; padding:6px 14px;">Подробнее</a>
+                        {% if perms.products_app.change_review and review.author == user %}
+                        <a href="{% url 'review_update' review.pk %}" class="btn-detail btn-edit" style="flex:none; padding:6px 14px;">Изменить</a>
+                        {% endif %}
+                        {% if perms.products_app.delete_review and review.author == user %}
+                        <a href="{% url 'review_delete' review.pk %}" class="btn-detail btn-delete" style="flex:none; padding:6px 14px;">Удалить</a>
+                        {% endif %}
                     </div>
                 </div>
                 {% empty %}

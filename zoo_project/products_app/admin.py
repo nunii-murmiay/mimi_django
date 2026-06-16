@@ -33,3 +33,10 @@ class ReviewAdmin(admin.ModelAdmin):
 class PromotionAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Pos_order)
+class Pos_orderAdmin(admin.ModelAdmin):
+    pass

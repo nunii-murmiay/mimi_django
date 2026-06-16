@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title_name %}
+Оформление заказа
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Оформление заказа</h1>
+    <p style="color:#7b6b5c; margin-bottom:24px;">Сумма заказа: <strong>{{ basket.get_total_price }} ₽</strong></p>
+
+    <div class="form-card">
+        <form method="post" action="{% url 'basket_buy' %}">
+            {% csrf_token %}
+            {{ form_order.as_p }}
+            <div class="form-actions">
+                <button type="submit" class="btn-add">Подтвердить заказ</button>
+                <a href="{% url 'basket_detail' %}" class="btn-cancel">← Обратно к корзине</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -31,8 +31,12 @@
             {% endif %}
             <div class="detail-actions">
                 <a href="{% url 'tovar_detail' review.tovar.pk %}" class="btn-back">← К товару</a>
+                {% if perms.products_app.change_review and review.author == user %}
                 <a href="{% url 'review_update' review.pk %}" class="btn-back">✎ Редактировать</a>
+                {% endif %}
+                {% if perms.products_app.delete_review and review.author == user %}
                 <a href="{% url 'review_delete' review.pk %}" class="btn-back" style="background:#fee; color:#e27737;">Удалить</a>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title_name %}
+Мои заказы
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Мои заказы</h1>
+
+    {% if order_list %}
+    <div class="cart-items">
+        <div class="cart-header" style="grid-template-columns:0.5fr 1.5fr 1fr 1fr 2fr;">
+            <span>№</span>
+            <span>Дата</span>
+            <span>Доставка</span>
+            <span>Адрес</span>
+            <span>Товары</span>
+        </div>
+        {% for order in order_list %}
+        <div class="cart-item" style="grid-template-columns:0.5fr 1.5fr 1fr 1fr 2fr;">
+            <span>#{{ order.pk }}</span>
+            <span>{{ order.date_create|date:"d.m.Y H:i" }}</span>
+            <span>{{ order.get_delivery_type_display }}</span>
+            <span>{{ order.delivery_address|truncatechars:30 }}</span>
+            <span>
+                {% for pos in order.pos_order_set.all %}
+                    {{ pos.tovar.name }} ({{ pos.count }} шт. × {{ pos.tovar.price }} ₽){% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-message">У вас пока нет заказов</div>
+    {% endif %}
+
+    <div style="margin-top:24px;">
+        <a href="{% url 'tovar_list' %}" class="btn-back">← К товарам</a>
+    </div>
+</div>
+{% endblock content %}
